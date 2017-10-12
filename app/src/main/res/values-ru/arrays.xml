@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Дни -->
+    <array name="days_week">
+	    <item>Понедельник</item>
+	    <item>Вторник</item>
+	    <item>Среда</item>
+	    <item>Четверг</item>
+	    <item>Пятница</item>
+	    <item>Суббота</item>
+	    <item>Воскресенье</item>
+	</array>
+	
+    <string-array name="classes">
+        <item>Serbian language</item>
+        <item>English language</item>
+        <item>French language</item>
+        <item>Mathematics</item>
+        <item>Science</item>
+        <item>Music</item>
+        <item>Arts</item>
+        <item>Gymnastics</item>
+        <item>Religious education</item>
+        <item>Civil education</item>        
+    </string-array>
+    
+</resources>

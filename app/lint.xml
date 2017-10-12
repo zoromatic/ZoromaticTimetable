@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="DefaultLocale" severity="ignore" />
+    <issue id="DuplicateIds" severity="warning" />
+    <issue id="InflateParams" severity="ignore" />
+    <issue id="MissingTranslation" severity="warning" />
+    <issue id="ProtectedPermissions" severity="warning" />
+    <issue id="ViewHolder" severity="ignore" />
+</lint>

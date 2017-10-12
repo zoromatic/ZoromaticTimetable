@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item android:id="@+id/insert"
+		android:title="@string/new_item" 
+		app:showAsAction="ifRoom"
+		android:icon="?attr/iconAdd"/>	
+	<item android:id="@+id/delete"
+		android:title="@string/delete_item" 
+		app:showAsAction="ifRoom"
+		android:icon="?attr/iconDelete"/>
+    <item android:id="@+id/refresh"
+		android:title="@string/refresh"
+		app:showAsAction="ifRoom"
+		app:actionLayout="@layout/refresh_menuitem"
+		android:icon="?attr/iconRefresh" />
+	<item android:id="@+id/settings"
+		android:title="@string/settings"
+		app:showAsAction="ifRoom" 
+		android:icon="?attr/iconSettings" />
+</menu>

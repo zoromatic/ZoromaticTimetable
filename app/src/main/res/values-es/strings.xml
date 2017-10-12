@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Horarios</string>
+    <string name="app_prefs">Preferencias de Horarios</string>
+    <string name="about">Acerca de аplicación</string>
+    <string name="about_app">Acerca de аplicación Horarios</string>
+    <string name="selectlanguage">Seleccione idioma</string>
+	<string name="language">Idioma</string>
+	<string name="refresh">Actualizar</string>
+	<string name="settings">Ajustes</string>
+	<string name="generalsettings">Configuración general</string>
+	<string name="lookandfeel">El aspecto</string>
+	<string name="selecttheme">Seleccione tema de aplicación</string>
+	<string name="apptheme">Tema Principal</string>
+	<string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Cerrar</string>
+	<string name="category_general">general</string>
+    <string name="category_look">aspecto</string>
+    <string name="category_theme">tema</string>
+    <string name="selectcolorscheme">Seleccione el esquema de color de la aplicación</string>
+	<string name="appcolortheme">Esquema de color principal</string>
+	<string name="working">Trabajando&#8230;</string>
+	<string name="retrieving">Recuperando datos&#8230;</string>
+	<string name="theme_colors">Tema y Colores</string>
+	<string name="configurethemeandcolors">Configure tema y los colores</string>
+	<string name="new_item">New Item</string>
+	<string name="insert_item">Insert Item</string>
+	<string name="delete_item">Delete Item</string>
+	<string name="select_class">Class</string>
+	<string name="start">Start</string>
+	<string name="end">End</string>
+	<string name="description">Description</string>
+	<string name="new_class">New Class</string>
+	<string name="edit_class">Edit Class</string>
+		
+	<string name="asb_switch_on">ON</string>
+    <string name="asb_switch_off">OFF</string>
+	
+   	<string name="black">Negro</string>
+   	<string name="white">Blanco</string>
+   	<string name="red">Rojo</string>
+    <string name="pink">Roso</string>
+    <string name="purple">Púrpura</string>
+    <string name="deep_purple">Púrpura oscuro</string>
+    <string name="indigo">Indigo</string>
+    <string name="blue">Azul</string>
+    <string name="light_blue">Azul Claro</string>
+    <string name="cyan">Cian</string>
+    <string name="teal">Verde azulado</string>
+    <string name="green">Verde</string>
+    <string name="light_green">Verde Claro</string>
+    <string name="lime">Cal</string>
+    <string name="yellow">Amarillo</string>
+    <string name="amber">Ámbar</string>
+    <string name="orange">Naranjo</string>
+    <string name="deep_orange">Naranjo oscuro</string>
+    <string name="brown">Marrón</string>
+    <string name="grey">Gris</string>
+    <string name="blue_grey">Gris azulado</string>
+    
+    <string name="label_dark">Oscura</string>
+    <string name="label_light">Clara</string>
+    
+    <string name="back_button_label">Atrás</string>
+    <string name="next_button_label">Siguiente</string>
+    <string name="skip_button_label">Omitir</string>
+    
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Selector de color</string>
+    <string name="press_color_to_apply">Presione el color para aplicarlo</string>
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Распоред часова</string>
+    <string name="app_prefs">Подешавања Распореда часова</string>
+    <string name="about">О програму</string>
+    <string name="about_app">О апликацији Распоред часова</string>
+    <string name="selectlanguage">Изаберите језик</string>
+	<string name="language">Језик</string>
+	<string name="refresh">Освежи</string>
+	<string name="settings">Подешавања</string>
+	<string name="generalsettings">Општа подешавања</string>
+	<string name="lookandfeel">Изглед</string>
+	<string name="selecttheme">Изаберите тему</string>
+	<string name="apptheme">Главна тема</string>
+	<string name="drawer_open">Отвори</string>
+    <string name="drawer_close">Затвори</string>
+    <string name="category_general">general</string>
+    <string name="category_look">look</string>
+    <string name="category_theme">theme</string>
+   	<string name="selectcolorscheme">Изаберите шему бојења</string>
+	<string name="appcolortheme">Главна шема бојења</string>
+	<string name="working">Ради&#8230;</string>
+	<string name="retrieving">Пријем података&#8230;</string>
+	<string name="theme_colors">Тема и боје</string>
+	<string name="configurethemeandcolors">Подешавање теме и боја</string>
+	<string name="new_item">Нова ставка</string>
+	<string name="insert_item">Унеси ставку</string>
+	<string name="delete_item">Избриши ставку</string>
+	<string name="select_class">Час</string>
+	<string name="start">Почетак</string>
+	<string name="end">Крај</string>
+	<string name="description">Опис</string>
+	<string name="new_class">Нови час</string>
+	<string name="edit_class">Обрада часа</string>	
+	
+	<string name="asb_switch_on">ON</string>
+    <string name="asb_switch_off">OFF</string>
+		
+   	<string name="black">Црна</string>
+   	<string name="white">Бела</string>
+   	<string name="red">Црвена</string>
+    <string name="pink">Ружичаста</string>
+    <string name="purple">Љубичаста</string>
+    <string name="deep_purple">Тамнољубичаста</string>
+    <string name="indigo">Индиго</string>
+    <string name="blue">Плава</string>
+    <string name="light_blue">Светлоплава</string>
+    <string name="cyan">Плавозелена</string>
+    <string name="teal">Тамнозелена</string>
+    <string name="green">Зелена</string>
+    <string name="light_green">Светлозелена</string>
+    <string name="lime">Жутозелена</string>
+    <string name="yellow">Жута</string>
+    <string name="amber">Ћилибар</string>
+    <string name="orange">Наранџаста</string>
+    <string name="deep_orange">Тамнонаранџаста</string>
+    <string name="brown">Смеђа</string>
+    <string name="grey">Сива</string>
+    <string name="blue_grey">Плавосива</string>   	
+    
+    <string name="label_dark">Тамна</string>
+    <string name="label_light">Светла</string>
+    
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+    <string name="skip_button_label">Skip</string>
+    
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">Избор боје</string>
+    <string name="press_color_to_apply">Притисните боју за избор</string>    
+</resources>

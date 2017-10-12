@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mobileWidget"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_widget"
+    android:gravity="center"
+    android:padding="1sp"
+    android:orientation="vertical" >
+
+    <ImageButton android:id="@+id/increment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_plus"
+        android:paddingTop="22dip"
+        android:paddingBottom="22dip"
+        android:contentDescription="@string/app_name" />
+
+    <EditText
+        android:id="@+id/numberpicker_input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:singleLine="true"
+        android:inputType="number"
+        android:background="@android:drawable/editbox_background" />
+
+    <ImageButton android:id="@+id/decrement"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_minus"
+        android:paddingTop="22dip"
+        android:paddingBottom="22dip"
+        android:contentDescription="@string/app_name" />
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widgets="http://schemas.android.com/apk/res/com.zoromatic.timetable"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <Preference
+        android:icon="?attr/iconPalette"
+        android:key="@string/category_theme"
+        android:summary="@string/configurethemeandcolors"
+        android:title="@string/theme_colors" >
+    </Preference>
+
+    <com.zoromatic.timetable.ImageListPreference
+        android:defaultValue="0"
+        android:entries="@array/languageArray"
+        android:entryValues="@array/languageValues"
+        android:icon="?attr/iconLanguage"
+        android:key="languageoptions_"
+        android:summary="@string/selectlanguage"
+        android:title="@string/language" />
+
+</PreferenceScreen>

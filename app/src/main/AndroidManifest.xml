@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zoromatic.timetable"
+    android:versionCode="20"
+    android:versionName="2.0" >
+
+    <supports-screens
+        android:anyDensity="true"
+        android:xlargeScreens="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+	 
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" 
+        android:allowBackup="true" 
+        android:name="com.zoromatic.timetable.ZoromaticTimetableApplication"
+        android:theme="@style/Theme.AppCompat" >  
+        
+        <uses-library android:required="false" android:name="com.sec.android.app.multiwindow" />
+		<meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
+		<meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W" android:value="632.0dip" />
+		<meta-data android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H" android:value="598.0dip" />
+		<meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W" android:value="632.0dip" />
+		<meta-data android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H" android:value="598.0dip" />
+		<meta-data android:name="com.samsung.android.sdk.multiwindow.multiinstance.enable" android:value="true" />
+		<meta-data android:name="com.samsung.android.sdk.multiwindow.penwindow.enable" android:value="true" />
+        
+        <activity
+            android:name="com.zoromatic.timetable.ZoromaticTimetableActivity"
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+	            <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.zoromatic.timetable.TimetableActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+	            <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
+            </intent-filter>            
+        </activity>
+        
+        <activity
+            android:name="com.zoromatic.timetable.TimetableEditActivity"
+            android:label="@string/edit_class" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+	            <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
+            </intent-filter>            
+        </activity>
+        
+        <activity
+            android:name="com.zoromatic.timetable.ZoromaticTimetablePreferenceActivity"
+            android:label="@string/app_prefs" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+	            <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
+            </intent-filter>            
+        </activity>               
+        
+    </application>
+
+</manifest>

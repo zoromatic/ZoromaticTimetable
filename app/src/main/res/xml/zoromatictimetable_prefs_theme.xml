@@ -1,0 +1,21 @@
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:widgets="http://schemas.android.com/apk/res/com.zoromatic.timetable">
+
+    <com.zoromatic.timetable.ImageListPreference
+        android:defaultValue="0"
+        android:entries="@array/themeArray"
+        android:entryValues="@array/themeValues"
+        android:key="maintheme_"
+        android:summary="@string/selecttheme"
+        android:title="@string/apptheme" />
+    
+    <com.zoromatic.timetable.ImageListPreference
+        android:defaultValue="0"
+        android:entries="@array/colorSchemeArray"
+        android:entryValues="@array/colorSchemeValues"
+        android:key="maincolorscheme_"
+        android:summary="@string/selectcolorscheme"
+        android:title="@string/appcolortheme"
+        widgets:entryColorSchemes="@array/colorSchemeColorValues" />
+
+</PreferenceScreen>
