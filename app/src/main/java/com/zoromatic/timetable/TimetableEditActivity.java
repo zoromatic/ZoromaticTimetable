@@ -2,11 +2,9 @@ package com.zoromatic.timetable;
 
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +12,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -77,28 +73,12 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 				true);
 		int primaryColor = outValue.resourceId;
 
-		setStatusBarColor(findViewById(R.id.statusBarBackground), 
-				getResources().getColor(primaryColor));
-		
 		TypedArray arrayClasses = res.obtainTypedArray(R.array.classes);
-		/*TypedArray arrayClassesIds = res.obtainTypedArray(R.array.classesIds);
-		
-		final ClassData classes[] = new ClassData[arrayClassesIds.length()];
-		
-		for (int  i=0; i<arrayClasses.length(); i++) {
-			classes[i] = new ClassData(arrayClasses.getString(i), arrayClassesIds.getInt(i, i));
-		}*/
-		
 		mSpinner = (Spinner) findViewById(R.id.spinnerClass);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		        R.array.classes, android.R.layout.simple_spinner_item);
 		
-		/*ArrayAdapter<ClassData> adapter = 
-	            new ArrayAdapter<ClassData>( 
-	                this,
-	                android.R.layout.simple_spinner_item,
-	                classes );*/
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);		
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpinner.setAdapter(adapter);		
 		mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(
@@ -106,9 +86,6 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
                     View view, 
                     int position, 
                     long id) {
-            	/*ClassData d = classes[position];
-            	mClassText = d.getValue();*/
-            	//mClassText = ((TextView) view).getText().toString();
             	mClassText = parent.getItemAtPosition(position).toString();
             }
 
@@ -118,7 +95,6 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
         });
 		
 		arrayClasses.recycle();
-		//arrayClassesIds.recycle();
 		
 		mTimePickerStart = (TimePicker) findViewById(R.id.timePickerStart);
 		mTimePickerEnd = (TimePicker) findViewById(R.id.timePickerEnd);
@@ -155,29 +131,7 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 
 		populateFields();
 	}
-	
-	/*class ClassData {
-        public ClassData( String value, long id ) {
-            this.value = value;
-            this.id = id;
-        }
 
-        public String getValue() {
-            return value;
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public String toString() {
-            return value;
-        }
-
-        String value;
-        long id;
-    }*/
-	
 	@SuppressWarnings("deprecation")
 	private void populateFields() {
 	    if (mRowId != null && mRowId != -1) {
@@ -190,8 +144,6 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 	        startManagingCursor(timetable);
 	        mSpinner.setSelection(timetable.getInt(
 	        		timetable.getColumnIndexOrThrow(SQLiteDbAdapter.KEY_CLASS_INDEX)));
-	        //setSelectionById(timetable.getInt(
-	        //		timetable.getColumnIndexOrThrow(SQLiteDbAdapter.KEY_CLASS_INDEX)));
 	        mDescription.setText(timetable.getString(
 	        		timetable.getColumnIndexOrThrow(SQLiteDbAdapter.KEY_DESCRIPTION)));
 	        stopManagingCursor(timetable);
@@ -215,16 +167,6 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 	        mTimePickerEnd.setCurrentMinute(0);
 	    }
 	}
-	
-	/*private void setSelectionById(long id) {
-		for (int i = 0; i < mSpinner.getCount(); i++) {              
-            long itemIdAtPosition2 = mSpinner.getItemIdAtPosition(i);
-            if (itemIdAtPosition2 == id) {
-            	mSpinner.setSelection(i);
-            	break;
-            }
-		}
-	}*/
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -262,36 +204,4 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 		
     	super.onBackPressed();              
     }
-	
-	@SuppressLint("InlinedApi")
-	public void setStatusBarColor(View statusBar,int color) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			Window w = getWindow();
-			w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			int statusBarHeight = getStatusBarHeight();
-			statusBar.getLayoutParams().height = /*actionBarHeight + */statusBarHeight;
-			statusBar.setBackgroundColor(color);
-		} else {
-			statusBar.setVisibility(View.GONE);
-		}
-	}
-	
-	public int getActionBarHeight() {
-		int actionBarHeight = 0;
-		TypedValue tv = new TypedValue();
-		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-		{
-			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
-		return actionBarHeight;
-	}
-
-	public int getStatusBarHeight() {
-		int result = 0;
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0) {
-			result = getResources().getDimensionPixelSize(resourceId);
-		}
-		return result;
-	}
 }
