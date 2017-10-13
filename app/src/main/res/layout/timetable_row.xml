@@ -13,7 +13,7 @@
         android:contentDescription="@string/app_name"        
         android:src="@drawable/ic_settings_white_48dp" />
 	
-	<android.support.v7.internal.widget.TintCheckBox
+	<CheckBox
         android:id="@+id/checkBoxSelect"
         android:layout_width="40dp"
         android:layout_height="40dp"
