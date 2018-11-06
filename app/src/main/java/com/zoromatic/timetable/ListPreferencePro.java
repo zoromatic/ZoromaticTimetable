@@ -1,8 +1,5 @@
 package com.zoromatic.timetable;
 
-import com.alertdialogpro.AlertDialogPro;
-import com.zoromatic.timetable.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,11 +9,12 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.ListPreference;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class ListPreferencePro extends ListPreference {
-	private AlertDialogPro.Builder mBuilder;
+	private AlertDialog.Builder mBuilder;
 	private Dialog mDialog;
 	private int mWhichButtonClicked;
 	
@@ -42,8 +40,8 @@ public class ListPreferencePro extends ListPreference {
 		
 		String theme = Preferences.getMainTheme(getContext());    
 
-		mBuilder = new AlertDialogPro.Builder(context, 
-				theme.compareToIgnoreCase("light") == 0?R.style.Theme_AlertDialogPro_Material_Light:R.style.Theme_AlertDialogPro_Material);
+		mBuilder = new AlertDialog.Builder(context, 
+				theme.compareToIgnoreCase("light") == 0?R.style.AppCompatAlertDialogStyleLight:R.style.AppCompatAlertDialogStyle);
 		mBuilder.setTitle(getTitle());
 		mBuilder.setIcon(getDialogIcon());
 		mBuilder.setNegativeButton(getNegativeButtonText(), this);

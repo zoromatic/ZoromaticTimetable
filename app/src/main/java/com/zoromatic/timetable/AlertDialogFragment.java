@@ -2,8 +2,6 @@ package com.zoromatic.timetable;
 
 import java.util.List;
 
-import com.alertdialogpro.AlertDialogPro;
-import com.zoromatic.timetable.R;
 import com.zoromatic.timetable.TimetableActivity.TimetablePagerItem;
 
 import android.app.Dialog;
@@ -11,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
 public class AlertDialogFragment extends DialogFragment
@@ -34,7 +33,7 @@ public class AlertDialogFragment extends DialogFragment
         	input.setText(text);
         
         String theme = Preferences.getMainTheme(getActivity());    	
-    	AlertDialogPro.Builder builder = null;
+    	AlertDialog.Builder builder = null;
         
     	if (editBox) {
     		
@@ -53,8 +52,8 @@ public class AlertDialogFragment extends DialogFragment
 	    		}
 	    		
 	    		if (fragment != null) {
-		    		builder = new AlertDialogPro.Builder(getActivity(),				 
-		    				theme.compareToIgnoreCase("light") == 0?R.style.Theme_AlertDialogPro_Material_Light:R.style.Theme_AlertDialogPro_Material)
+		    		builder = new AlertDialog.Builder(getActivity(),
+		    				theme.compareToIgnoreCase("light") == 0?R.style.AppCompatAlertDialogStyleLight:R.style.AppCompatAlertDialogStyle)
 		    		.setTitle(title)
 		    		.setMessage(message)
 		    		.setView(input)
@@ -70,7 +69,7 @@ public class AlertDialogFragment extends DialogFragment
     		}
     	} 
     	
-    	AlertDialogPro dialog = builder.show();
+    	AlertDialog dialog = builder.show();
         
         return dialog;
     }
