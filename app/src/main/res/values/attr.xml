@@ -23,6 +23,7 @@
     <attr name="iconRestart" format="reference" />
     <attr name="iconSound" format="reference" />
     <attr name="iconDelete" format="reference" />
+    <attr name="iconDone" format="reference" />
     <!--<attr name="tabTextColor" format="reference" />-->
     <attr name="toolbarNewStyle" format="reference" />
     <attr name="colorSwitchStyle" format="reference" />

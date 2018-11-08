@@ -246,7 +246,7 @@ public class TimetableContentFragment extends Fragment {
 		        }
 		    	
 		    	if (!activityDelete) {
-		    		((TimetableActivity)getActivity()).readCachedData(mContext);
+		    		((TimetableActivity)getActivity()).readCachedData();
 		    	}
 			}
     	});

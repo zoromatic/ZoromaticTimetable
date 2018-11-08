@@ -10,11 +10,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
@@ -167,41 +170,63 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 	        mTimePickerEnd.setCurrentMinute(0);
 	    }
 	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		return true;
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.timetable_edit, menu);
+
+		return true;
+	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 	    case android.R.id.home:
 	        onBackPressed();	        
 	        return true;
+		case R.id.done:
+            if (saveClass())
+                finish();
+			return true;
 	    default:
 	    	return super.onOptionsItemSelected(item);
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
     public void onBackPressed() {
-		if (mDbHelper == null)
-    		mDbHelper = new SQLiteDbAdapter(this);
-		
-		if (mDayId >= 0) {
-			if (mRowId == null || mRowId == -1) {
-				mDbHelper.open();
-		    	
-		    	long id = mDbHelper.createTimetable(mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
-		    			mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
-		    	
-		    	mDbHelper.close();
-			} else {
-				mDbHelper.open();
-		    	
-		    	boolean ok = mDbHelper.updateTimetable(mRowId, mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
-		    			mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
-		    	
-		    	mDbHelper.close();
-			}
-		}
-		
-    	super.onBackPressed();              
+		super.onBackPressed();
+    }
+
+    public boolean saveClass() {
+        if (mDbHelper == null)
+            mDbHelper = new SQLiteDbAdapter(this);
+
+        if (mDayId >= 0) {
+            if (mRowId == null || mRowId == -1) {
+                mDbHelper.open();
+
+                long id = mDbHelper.createTimetable(mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
+                        mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
+
+                mDbHelper.close();
+            } else {
+                mDbHelper.open();
+
+                boolean ok = mDbHelper.updateTimetable(mRowId, mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
+                        mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
+
+                mDbHelper.close();
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

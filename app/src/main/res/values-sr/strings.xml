@@ -67,5 +67,7 @@
     
     <!-- Color Picker -->
     <string name="dialog_color_picker">Избор боје</string>
-    <string name="press_color_to_apply">Притисните боју за избор</string>    
+    <string name="press_color_to_apply">Притисните боју за избор</string>
+
+    <string name="done">Готово</string>
 </resources>

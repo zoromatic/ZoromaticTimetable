@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -17,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,7 +26,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -66,8 +63,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 	private static final String KEY_CURRENT_ITEM = "key_current_item";
 
 	private MenuItem refreshItem = null;
-	LayoutInflater inflater = null;
-	ImageView imageView = null;
 	Animation rotation = null;
 	
 	private boolean mActivityDelete = false;
@@ -102,7 +97,7 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 		setContentView(R.layout.timetable);
 
 		initView();
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		initDrawer();
 
@@ -110,7 +105,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 		getTheme().resolveAttribute(R.attr.colorPrimary,
 				outValue,
 				true);
-		int primaryColor = outValue.resourceId;
 
 		rotation = AnimationUtils.loadAnimation(this, R.anim.animate_menu);
 		
@@ -134,10 +128,10 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 			
 		if (refreshItem != null && rotation != null) {
 			
-			if (MenuItemCompat.getActionView(refreshItem) != null) {
-				MenuItemCompat.getActionView(refreshItem).startAnimation(rotation);
+			if (refreshItem.getActionView() != null) {
+				refreshItem.getActionView().startAnimation(rotation);
 				
-				readCachedData(this);
+				readCachedData();
 			}									
 		}		
 	}
@@ -153,25 +147,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 		}
 	}
 
-	public int getActionBarHeight() {
-		int actionBarHeight = 0;
-		TypedValue tv = new TypedValue();
-		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-		{
-			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
-		return actionBarHeight;
-	}
-
-	public int getStatusBarHeight() {
-		int result = 0;
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0) {
-			result = getResources().getDimensionPixelSize(resourceId);
-		}
-		return result;
-	}
-	
 	private class DataProviderTask extends AsyncTask<Void, Void, Void> {
     	
 	TimetableActivity timetableActivity = null;
@@ -208,11 +183,11 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 	private void initView() {
 		String theme = Preferences.getMainTheme(this);
 
-		leftDrawerList = (ListView) findViewById(R.id.left_drawer);
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+		leftDrawerList = findViewById(R.id.left_drawer);
+		toolbar = findViewById(R.id.toolbar);
+		drawerLayout = findViewById(R.id.drawerLayout);
 
-		rowItems = new ArrayList<RowItem>();
+		rowItems = new ArrayList<>();
 
 		RowItem item = new RowItem(theme.compareToIgnoreCase("light") == 0?R.drawable.ic_refresh_black_48dp:R.drawable.ic_refresh_white_48dp, 
 				(String) getResources().getText(R.string.refresh));
@@ -248,7 +223,7 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 				mDrawerOpen = true;
 			}
 		};
-		drawerLayout.setDrawerListener(drawerToggle);
+		drawerLayout.addDrawerListener(drawerToggle);
 	}
 
 	@Override
@@ -276,7 +251,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 			break;
 		case 1: // Settings
 			openSettings();
-
 			break;
 		default:
 			break;
@@ -352,22 +326,22 @@ public class TimetableActivity extends ThemeAppCompatActivity {
     
     public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.timetablemenu, menu);
+		inflater.inflate(R.menu.timetable, menu);
 		
 		refreshItem = menu.findItem(R.id.refresh);
 		
 		if (refreshItem != null) {
 			final Menu menuFinal = menu;
 
-			if (MenuItemCompat.getActionView(refreshItem) != null) {
+			if (refreshItem.getActionView() != null) {
 				TypedValue outValue = new TypedValue();
 				getTheme().resolveAttribute(R.attr.iconRefresh,
 						outValue,
 						true);
 				int refreshIcon = outValue.resourceId;
-				((ImageView)MenuItemCompat.getActionView(refreshItem)).setImageResource(refreshIcon);
-				
-				MenuItemCompat.getActionView(refreshItem).setOnClickListener(new OnClickListener() {
+				((ImageView)refreshItem.getActionView()).setImageResource(refreshIcon);
+
+				refreshItem.getActionView().setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {   
 						menuFinal.performIdentifierAction(refreshItem.getItemId(), 0);
@@ -399,7 +373,7 @@ public class TimetableActivity extends ThemeAppCompatActivity {
     			
     			if (fragment != null) {
 	    			Bundle args = fragment.getArguments();
-					long dayId = -1;
+					long dayId;
 	
 					if (args != null) {
 						dayId = args.getLong(SQLiteDbAdapter.KEY_DAY_INDEX);
@@ -454,6 +428,7 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 		}		    	    	     
 	}
 
+	@SuppressLint("ResourceType")
 	public boolean loadData() {
 		try {
 			if (mTabs != null) {
@@ -505,8 +480,8 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 					true);
 			int tabTextColor = getResources().getColor(outValue.resourceId);
 
-			mSlidingTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-			mViewPager = (ViewPager) findViewById(R.id.viewpager);
+			mSlidingTabLayout = findViewById(R.id.sliding_tabs);
+			mViewPager = findViewById(R.id.viewpager);
 			
 			if (mFragmentPagerAdapter == null)
 				mFragmentPagerAdapter = new TimetableFragmentPagerAdapter(getSupportFragmentManager());
@@ -548,11 +523,11 @@ public class TimetableActivity extends ThemeAppCompatActivity {
 	}
 
 	@SuppressLint("NewApi")
-	void readCachedData (Context context) {
+	void readCachedData() {
 		if (refreshItem != null) {
 			
-			if (MenuItemCompat.getActionView(refreshItem) != null) {
-				MenuItemCompat.getActionView(refreshItem).clearAnimation();
+			if (refreshItem.getActionView() != null) {
+				refreshItem.getActionView().clearAnimation();
 			}
 		}
 		

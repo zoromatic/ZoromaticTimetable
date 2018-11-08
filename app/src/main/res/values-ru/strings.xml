@@ -68,4 +68,6 @@
     <!-- Color Picker -->
     <string name="dialog_color_picker">Выбор цвета</string>
     <string name="press_color_to_apply">Нажмите на цвет, чтобы применить</string>
+
+    <string name="done">Сделано</string>
 </resources>
