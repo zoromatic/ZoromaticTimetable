@@ -1,10 +1,14 @@
 package com.zoromatic.timetable;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MenuItem;
+
+import java.util.Locale;
 
 public class ZoromaticTimetablePreferenceActivity extends ThemeAppCompatActivity {
     ZoromaticTimetablePreferenceFragment prefs = null;
@@ -12,10 +16,30 @@ public class ZoromaticTimetablePreferenceActivity extends ThemeAppCompatActivity
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String lang = Preferences.getLanguageOptions(this);
+
+        if (lang.equals("")) {
+            String langDef = Locale.getDefault().getLanguage();
+
+            if (!langDef.equals(""))
+                lang = langDef;
+            else
+                lang = "en";
+
+            Preferences.setLanguageOptions(this, lang);
+        }
+
+        // Change locale settings in the application
+        final Resources res = getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(lang.toLowerCase());
+        res.updateConfiguration(conf, dm);
         
         setContentView(R.layout.activity_prefs);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 	    setSupportActionBar(toolbar);
 	    
 	    TypedValue outValue = new TypedValue();
@@ -49,7 +73,7 @@ public class ZoromaticTimetablePreferenceActivity extends ThemeAppCompatActivity
     		        }
                 }
             }
-        	        	
+
             // Display the fragment as the main content.
         	getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, prefs)

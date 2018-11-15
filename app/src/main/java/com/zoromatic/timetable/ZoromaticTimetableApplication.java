@@ -9,26 +9,26 @@ import android.util.DisplayMetrics;
 public class ZoromaticTimetableApplication extends Application {
     @Override
     public void onCreate() {
-        super.onCreate();   
-        
+        super.onCreate();
+
         String lang = Preferences.getLanguageOptions(this);
-    	
+
         if (lang.equals("")) {
-    		String langDef = Locale.getDefault().getLanguage();
-    		
-    		if (!langDef.equals(""))
-    			lang = langDef;
-    		else
-    			lang = "en";    
-    		
-    		Preferences.setLanguageOptions(this, lang);
-    	}			
-    	
-    	// Change locale settings in the application
-    	Resources res = getApplicationContext().getResources();
+            String langDef = Locale.getDefault().getLanguage();
+
+            if (!langDef.equals(""))
+                lang = langDef;
+            else
+                lang = "en";
+
+            Preferences.setLanguageOptions(this, lang);
+        }
+
+        // Change locale settings in the application
+        Resources res = getBaseContext().getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
         conf.locale = new Locale(lang.toLowerCase());
-        res.updateConfiguration(conf, dm); 
+        res.updateConfiguration(conf, dm);
     }
 }

@@ -26,18 +26,18 @@ import android.util.Log;
 
 public class SQLiteDbAdapter {
 
-	public static final String KEY_ROW_ID = "_id";
-	public static final String KEY_DAY_INDEX = "day_index";
-	public static final String KEY_CLASS_INDEX = "class_index";
-	public static final String KEY_START_HOUR = "start_hour";
-	public static final String KEY_START_MINUTE = "start_minute";
-	public static final String KEY_END_HOUR = "end_hour";
-	public static final String KEY_END_MINUTE = "end_minute";
-	public static final String KEY_DESCRIPTION = "description";
-    
-    private static final String TAG = "SQLiteDbAdapter";
+	static final String KEY_ROW_ID = "_id";
+	static final String KEY_DAY_INDEX = "day_index";
+	static final String KEY_CLASS_INDEX = "class_index";
+	static final String KEY_START_HOUR = "start_hour";
+	static final String KEY_START_MINUTE = "start_minute";
+	static final String KEY_END_HOUR = "end_hour";
+	static final String KEY_END_MINUTE = "end_minute";
+	static final String KEY_DESCRIPTION = "description";
+
+    private static final String LOG_TAG = "SQLiteDbAdapter";
     private DatabaseHelper mDbHelper;
-    private SQLiteDatabase mDb;
+    private SQLiteDatabase mSQLiteDatabase;
 
     /**
      * Database creation SQL statement
@@ -53,7 +53,7 @@ public class SQLiteDbAdapter {
     private static final String DATABASE_TABLE = "timetables";
     private static final int DATABASE_VERSION = 1;
 
-    private final Context mCtx;
+    private final Context mContext;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -69,7 +69,7 @@ public class SQLiteDbAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+            Log.w(LOG_TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS timetables");
             onCreate(db);
@@ -79,145 +79,141 @@ public class SQLiteDbAdapter {
     /**
      * Constructor - takes the context to allow the database to be
      * opened/created
-     * 
-     * @param ctx the Context within which to work
+     *
+     * @param context the Context within which to work
      */
-    public SQLiteDbAdapter(Context ctx) {
-        this.mCtx = ctx;
+    SQLiteDbAdapter(Context context) {
+        this.mContext = context;
     }
 
     /**
      * Open the timetables database. If it cannot be opened, try to create a new
      * instance of the database. If it cannot be created, throw an exception to
      * signal the failure
-     * 
+     *
      * @return this (self reference, allowing this to be chained in an
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
     public SQLiteDbAdapter open() throws SQLException {
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getWritableDatabase();
+        mDbHelper = new DatabaseHelper(mContext);
+        mSQLiteDatabase = mDbHelper.getWritableDatabase();
         return this;
     }
 
-    public void close() {
+    void close() {
         mDbHelper.close();
     }
 
 
     /**
-     * Create a new timetable using data provided. If the timetable is
-     * successfully created return the new rowId for that timetable, otherwise return
+     * Create a new timetable class using data provided. If the timetable class is
+     * successfully created return the new rowId for that timetable class, otherwise return
      * a -1 to indicate failure.
-     * 
-     * @param day_index
-     * @param class_index
-     * @param start_hour
-     * @param start_minute
-     * @param end_hour
-     * @param end_minute
-     * @param description
+     *
+     * @param day_index day index
+     * @param class_index class index
+     * @param start_hour start hour
+     * @param start_minute start minute
+     * @param end_hour end hour
+     * @param end_minute end minute
+     * @param description description
      * @return rowId or -1 if failed
      */
-    public long createTimetable(long day_index, int class_index,
-    		int start_hour, int start_minute,  
-    		int end_hour, int end_minute,
-    		String description) {
+    long createTimetableClass(long day_index, int class_index,
+                              int start_hour, int start_minute,
+                              int end_hour, int end_minute,
+                              String description) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_DAY_INDEX, day_index);
         initialValues.put(KEY_CLASS_INDEX, class_index);
         initialValues.put(KEY_START_HOUR, start_hour);
         initialValues.put(KEY_START_MINUTE, start_minute);
         initialValues.put(KEY_END_HOUR, end_hour);
-        initialValues.put(KEY_END_MINUTE, end_minute);        
-        initialValues.put(KEY_DESCRIPTION, description);        
+        initialValues.put(KEY_END_MINUTE, end_minute);
+        initialValues.put(KEY_DESCRIPTION, description);
 
-        return mDb.insert(DATABASE_TABLE, null, initialValues);
+        return mSQLiteDatabase.insert(DATABASE_TABLE, null, initialValues);
     }
 
     /**
-     * Delete the timetable with the given rowId
-     * 
-     * @param rowId id of timetables to delete
+     * Delete the timetable class with the given rowId
+     *
+     * @param rowId id of timetable class to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deleteTimetable(long rowId) {
-
-        return mDb.delete(DATABASE_TABLE, KEY_ROW_ID + "=" + rowId, null) > 0;
+    boolean deleteTimetableClass(long rowId) {
+        return mSQLiteDatabase.delete(DATABASE_TABLE, KEY_ROW_ID + "=" + rowId, null) > 0;
     }
 
     /**
      * Return a Cursor over the list of all timetables in the database
-     * 
+     *
      * @return Cursor over all timetables
      */
-    public Cursor fetchAllTimetables() {
-    
-        return mDb.query(DATABASE_TABLE, 
-        		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX, 
-        		KEY_START_HOUR, KEY_START_MINUTE, 
-        		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION}, 
-        		null, null, null, KEY_DAY_INDEX + ", " + KEY_START_HOUR, null);
-    }
-    
-    /**
-     * Return a Cursor over the list of all timetables in the database
-     * 
-     * @return Cursor over all timetables
-     */
-    public Cursor fetchTimetables(long dayId) {
-
-        return mDb.query(true, DATABASE_TABLE, 
-        		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX, 
-        		KEY_START_HOUR, KEY_START_MINUTE, 
-        		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION}, 
-        		KEY_DAY_INDEX + "=" + dayId, 
+    Cursor fetchAllTimetables() {
+        return mSQLiteDatabase.query(DATABASE_TABLE,
+        		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX,
+        		KEY_START_HOUR, KEY_START_MINUTE,
+        		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION},
         		null, null, null, KEY_DAY_INDEX + ", " + KEY_START_HOUR, null);
     }
 
     /**
-     * Return a Cursor positioned at the timetable that matches the given rowId
-     * 
-     * @param rowId id of timetable to retrieve
-     * @return Cursor positioned to matching timetable, if found
-     * @throws SQLException if location timetable not be found/retrieved
+     * Return a Cursor over timetable by day
+     * @param day_index day index
+     * @return Cursor over timetable by day
      */
-    public Cursor fetchTimetable(long rowId) throws SQLException {
+    Cursor fetchTimetableByDay(long day_index) {
+        return mSQLiteDatabase.query(true, DATABASE_TABLE,
+        		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX,
+        		KEY_START_HOUR, KEY_START_MINUTE,
+        		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION},
+        		KEY_DAY_INDEX + "=" + day_index,
+        		null, null, null, KEY_DAY_INDEX + ", " + KEY_START_HOUR, null);
+    }
 
-        Cursor mCursor =
-
-            mDb.query(true, DATABASE_TABLE, 
-            		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX, 
-            		KEY_START_HOUR, KEY_START_MINUTE, 
-            		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION}, 
-            		KEY_ROW_ID + "=" + rowId, 
+    /**
+     * Return a Cursor positioned at the timetable class that matches the given rowId
+     *
+     * @param rowId id of timetable class to retrieve
+     * @return Cursor positioned to matching timetable class, if found
+     * @throws SQLException if location timetable class not be found/retrieved
+     */
+    Cursor fetchTimetableRow(long rowId) throws SQLException {
+        Cursor cursor =
+            mSQLiteDatabase.query(true, DATABASE_TABLE,
+            		new String[] {KEY_ROW_ID, KEY_DAY_INDEX, KEY_CLASS_INDEX,
+            		KEY_START_HOUR, KEY_START_MINUTE,
+            		KEY_END_HOUR, KEY_END_MINUTE, KEY_DESCRIPTION},
+            		KEY_ROW_ID + "=" + rowId,
             		null, null, null, KEY_DESCRIPTION, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
 
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursor;
     }
 
     /**
      * Update the location using the details provided. The location to be updated is
      * specified using the rowId, and it is altered to use the values passed in
-     * 
-     * @param rowId id of location to update
-     * @param day_index
-     * @param class_index
-     * @param start_hour
-     * @param start_minute
-     * @param end_hour
-     * @param end_minute
-     * @param description
+     *
+     * @param rowId row id of class to update
+     * @param day_index day index
+     * @param class_index class index
+     * @param start_hour start hour
+     * @param start_minute start minute
+     * @param end_hour end hour
+     * @param end_minute end minute
+     * @param description description
      * @return true if the location was successfully updated, false otherwise
      */
-    public boolean updateTimetable(long rowId, long day_index, int class_index,
-    		int start_hour, int start_minute,  
-    		int end_hour, int end_minute,
-    		String description) {
+    boolean updateTimetableClass(long rowId, long day_index, int class_index,
+                                 int start_hour, int start_minute,
+                                 int end_hour, int end_minute,
+                                 String description) {
         ContentValues args = new ContentValues();
         args.put(KEY_DAY_INDEX, day_index);
         args.put(KEY_CLASS_INDEX, class_index);
@@ -227,6 +223,6 @@ public class SQLiteDbAdapter {
         args.put(KEY_END_MINUTE, end_minute);
         args.put(KEY_DESCRIPTION, description);        
 
-        return mDb.update(DATABASE_TABLE, args, KEY_ROW_ID + "=" + rowId, null) > 0;
+        return mSQLiteDatabase.update(DATABASE_TABLE, args, KEY_ROW_ID + "=" + rowId, null) > 0;
     }
 }

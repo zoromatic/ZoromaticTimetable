@@ -12,9 +12,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 
-import com.zoromatic.timetable.PreferenceFragment;
-import com.zoromatic.timetable.R;
-
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.DisplayMetrics;
@@ -23,19 +20,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 @SuppressLint("NewApi")
-public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  implements OnSharedPreferenceChangeListener {
-	public static final int RESULT_CANCELED    = 0;
-    public static final int RESULT_OK           = -1;
-    public static final int RESULT_FIRST_USER   = 1;
-    public static final int REQUEST_THEME       = 0;
-    
+public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
+	public static final int REQUEST_THEME = 0;
     Context context = null;
     
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         
-        context = (Context)getActivity();        			   
+        context = getActivity();
 		
         if (context != null) {
         	String lang = Preferences.getLanguageOptions(context);
@@ -48,7 +41,7 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
         		else
         			lang = "en";
         		
-            	Preferences.setLanguageOptions(context, lang);                
+            	Preferences.setLanguageOptions(context, lang);
         	}
             
     		// Change locale settings in the application
@@ -133,19 +126,16 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
     
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
     	return super.onCreateView(inflater, container, savedInstanceState);    	    	             		       
 	}
     
     @Override
     public void onDestroyView() {
-    	
     	super.onDestroyView();
     }
     
     @Override
     public boolean onPreferenceTreeClick (PreferenceScreen preferenceScreen, Preference preference) {
-    	
     	if (preferenceScreen == null || preference == null)
     		return false;
     	
@@ -164,11 +154,9 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
     	switch (requestCode) {
     	case REQUEST_THEME:
-    		//if (resultCode == RESULT_OK){
-    			Intent intent = getActivity().getIntent();
-	        	getActivity().finish();
-	        	getActivity().startActivity(intent);
-            //}
+			Intent intent = getActivity().getIntent();
+			getActivity().finish();
+			getActivity().startActivity(intent);
     		break;		
 		}   	
     	
@@ -177,10 +165,7 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
     
 	@Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-	   
-		Context context = (Context)getActivity();
-        
-        if (context != null) {
+		if (context != null) {
     		if (key.equals(Preferences.PREF_MAIN_THEME)) {
     			ListPreference mainTheme = (ListPreference)findPreference(Preferences.PREF_MAIN_THEME);
     	        
@@ -191,7 +176,7 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
     	        	if (value.equals("") || mainTheme.findIndexOfValue(value) < 0)
     	        		value = "dark";	        	
     	        	
-    	        	Preferences.setMainTheme(context, value);	    	        	    	        
+    	        	Preferences.setMainTheme(context, value);
     	        	
     	        	mainTheme.setValueIndex(mainTheme.findIndexOfValue(value));
     	        	mainTheme.setSummary(mainTheme.getEntries()[mainTheme.findIndexOfValue(value)]);	    
@@ -219,12 +204,18 @@ public class ZoromaticTimetablePreferenceFragment extends PreferenceFragment  im
     		if (key.equals(Preferences.PREF_LANGUAGE_OPTIONS)) {
     			ListPreference language = (ListPreference)findPreference(Preferences.PREF_LANGUAGE_OPTIONS);
     	        
-    	        if (language != null)
-    	        {
+    	        if (language != null) {
     	        	if (!language.getValue().equals("") && language.findIndexOfValue(language.getValue()) >= 0)
     	        		Preferences.setLanguageOptions(context, language.getValue());
     	        	else
     	        		Preferences.setLanguageOptions(context, "en");
+
+					// Change locale settings in the application
+					Resources res = context.getResources();
+					DisplayMetrics dm = res.getDisplayMetrics();
+					android.content.res.Configuration conf = res.getConfiguration();
+					conf.locale = new Locale(language.getValue().toLowerCase());
+					res.updateConfiguration(conf, dm);
     	        	
     	        	Intent intent = getActivity().getIntent();
     	        	getActivity().finish();

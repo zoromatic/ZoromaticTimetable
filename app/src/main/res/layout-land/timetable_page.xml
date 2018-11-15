@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
- 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">      
-        
-		<LinearLayout
-		    android:id="@+id/down"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:baselineAligned="false"
-		    android:gravity="center|center_vertical"
-		    android:orientation="horizontal"
-		    android:weightSum="1.0" >
-		    
-		    <ListView android:id="@+id/listtimetables"
-	          android:layout_width="fill_parent"
-	          android:layout_height="wrap_content"
-	          android:smoothScrollbar="true"
-			  android:fastScrollEnabled="false"
-			  android:clickable="true"
-			  android:layout_marginBottom="36dp"/>
-		
-		</LinearLayout>
-	</ScrollView>
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/down"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="top"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <ListView
+                android:id="@+id/listtimetables"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="36dp"
+                android:clickable="true"
+                android:fastScrollEnabled="false"
+                android:focusable="true"
+                android:smoothScrollbar="true" />
+
+        </LinearLayout>
+    </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

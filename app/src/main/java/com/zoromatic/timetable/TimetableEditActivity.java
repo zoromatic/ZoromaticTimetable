@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,16 +18,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
 public class TimetableEditActivity extends ThemeAppCompatActivity {
-	
 	@SuppressWarnings("unused")
 	private static String LOG_TAG = "TimetableEditActivity";
-	private Toolbar mToolbar;
-	Spinner mSpinner;
+
+    Spinner mSpinner;
 	String  mClassText;
 	TimePicker mTimePickerStart;
 	TimePicker mTimePickerEnd;
@@ -40,44 +39,24 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String lang = Preferences.getLanguageOptions(this);
-
-		if (lang.equals("")) {
-			String langDef = Locale.getDefault().getLanguage();
-
-			if (!langDef.equals(""))
-				lang = langDef;
-			else
-				lang = "en";
-
-			Preferences.setLanguageOptions(this, lang);                
-		}
-
-		// Change locale settings in the application
-		final Resources res = getApplicationContext().getResources();
-		DisplayMetrics dm = res.getDisplayMetrics();
-		android.content.res.Configuration conf = res.getConfiguration();
-		conf.locale = new Locale(lang.toLowerCase());
-		res.updateConfiguration(conf, dm);
-		
 		if (mDbHelper == null)
     		mDbHelper = new SQLiteDbAdapter(this);
 
 		setContentView(R.layout.timetable_edit);	
 		
-		mDescription = (EditText) findViewById(R.id.description);
-		
-		mToolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(mToolbar);
+		mDescription = findViewById(R.id.description);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 		
 		TypedValue outValue = new TypedValue();
 		getTheme().resolveAttribute(R.attr.colorPrimary,
 				outValue,
 				true);
-		int primaryColor = outValue.resourceId;
 
+        final Resources res = getApplicationContext().getResources();
 		TypedArray arrayClasses = res.obtainTypedArray(R.array.classes);
-		mSpinner = (Spinner) findViewById(R.id.spinnerClass);
+		mSpinner = findViewById(R.id.spinnerClass);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		        R.array.classes, android.R.layout.simple_spinner_item);
 		
@@ -99,8 +78,8 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 		
 		arrayClasses.recycle();
 		
-		mTimePickerStart = (TimePicker) findViewById(R.id.timePickerStart);
-		mTimePickerEnd = (TimePicker) findViewById(R.id.timePickerEnd);
+		mTimePickerStart = findViewById(R.id.timePickerStart);
+		mTimePickerEnd = findViewById(R.id.timePickerEnd);
 		
 		mTimePickerStart.setFocusable(true);
 		mTimePickerStart.setFocusableInTouchMode(true);
@@ -137,13 +116,15 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
 
 	@SuppressWarnings("deprecation")
 	private void populateFields() {
+        Log.i(LOG_TAG, "populateFields");
+
 	    if (mRowId != null && mRowId != -1) {
 	    	if (mDbHelper == null)
 	    		mDbHelper = new SQLiteDbAdapter(this);
 	    	
 	    	mDbHelper.open();
 	        
-	    	Cursor timetable = mDbHelper.fetchTimetable(mRowId);
+	    	Cursor timetable = mDbHelper.fetchTimetableRow(mRowId);
 	        startManagingCursor(timetable);
 	        mSpinner.setSelection(timetable.getInt(
 	        		timetable.getColumnIndexOrThrow(SQLiteDbAdapter.KEY_CLASS_INDEX)));
@@ -204,21 +185,23 @@ public class TimetableEditActivity extends ThemeAppCompatActivity {
     }
 
     public boolean saveClass() {
-        if (mDbHelper == null)
+        Log.i(LOG_TAG, "saveClass");
+
+	    if (mDbHelper == null)
             mDbHelper = new SQLiteDbAdapter(this);
 
         if (mDayId >= 0) {
             if (mRowId == null || mRowId == -1) {
                 mDbHelper.open();
 
-                long id = mDbHelper.createTimetable(mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
+                long id = mDbHelper.createTimetableClass(mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
                         mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
 
                 mDbHelper.close();
             } else {
                 mDbHelper.open();
 
-                boolean ok = mDbHelper.updateTimetable(mRowId, mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
+                boolean ok = mDbHelper.updateTimetableClass(mRowId, mDayId, mSpinner.getSelectedItemPosition(), mTimePickerStart.getCurrentHour(), mTimePickerStart.getCurrentMinute(),
                         mTimePickerEnd.getCurrentHour(), mTimePickerEnd.getCurrentMinute(), mDescription.getText().toString());
 
                 mDbHelper.close();
