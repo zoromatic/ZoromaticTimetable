@@ -19,7 +19,6 @@ package com.zoromatic.timetable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import com.zoromatic.timetable.TimetableActivity.TimetablePagerItem;
 
@@ -38,8 +37,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -239,10 +236,6 @@ public class TimetableContentFragment extends Fragment {
                         }
                     }
                 }
-
-                /*if (!activityDelete) {
-                    ((TimetableActivity) getActivity()).readCachedData();
-                }*/
             }
         });
     }
@@ -500,26 +493,5 @@ public class TimetableContentFragment extends Fragment {
                 }
             }
         }
-    }
-
-    public static long daysBetween(final Calendar startDate, final Calendar endDate) {
-        int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
-        long endInstant = endDate.getTimeInMillis();
-        int presumedDays = (int) ((endInstant - startDate.getTimeInMillis()) / MILLIS_IN_DAY);
-        Calendar cursor = (Calendar) startDate.clone();
-        cursor.add(Calendar.DAY_OF_YEAR, presumedDays);
-        long instant = cursor.getTimeInMillis();
-
-        if (instant == endInstant)
-            return presumedDays;
-
-        final int step = instant < endInstant ? 1 : -1;
-
-        do {
-            cursor.add(Calendar.DAY_OF_MONTH, step);
-            presumedDays += step;
-        } while (cursor.getTimeInMillis() != endInstant);
-
-        return presumedDays;
     }
 }
