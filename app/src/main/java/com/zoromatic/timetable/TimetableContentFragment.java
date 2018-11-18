@@ -1,26 +1,8 @@
-/*
- * Copyright 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.zoromatic.timetable;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-import com.zoromatic.timetable.TimetableActivity.TimetablePagerItem;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -44,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -56,6 +39,7 @@ public class TimetableContentFragment extends Fragment {
     private static final String KEY_TITLE = "title";
     private static final String KEY_INDICATOR_COLOR = "indicator_color";
     private static String LOG_TAG = "TimetableContentFragment";
+    private static final String SELECTED_CLASSES = "selected_classes";
 
     Context mContext = null;
     private String mTitle = "";
@@ -65,6 +49,8 @@ public class TimetableContentFragment extends Fragment {
     private SQLiteDbAdapter mSQLiteDbAdapter;
     private long mSelectedRowId = -1;
     private long mDayId = -1;
+
+    private ArrayList<String> mSelectedClasses = new ArrayList<>();
 
     public static TimetableContentFragment newInstance(CharSequence title, int indicatorColor, long dayId) {
         Log.i(LOG_TAG, "newInstance");
@@ -96,6 +82,18 @@ public class TimetableContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putStringArrayList(SELECTED_CLASSES, mSelectedClasses);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @SuppressLint("InlinedApi")
@@ -141,6 +139,10 @@ public class TimetableContentFragment extends Fragment {
 
                     if (checkBox != null) {
                         checkBox.setChecked(true);
+
+                        if (!mSelectedClasses.contains(String.valueOf(id))) {
+                            mSelectedClasses.add(String.valueOf(id));
+                        }
                     }
                 }
 
@@ -186,6 +188,10 @@ public class TimetableContentFragment extends Fragment {
                     Color.RED);
         }
 
+        if (savedInstanceState != null) {
+            mSelectedClasses = savedInstanceState.getStringArrayList(SELECTED_CLASSES);
+        }
+
         return view;
     }
 
@@ -228,11 +234,14 @@ public class TimetableContentFragment extends Fragment {
             @Override
             public void run() {
                 if (mListView != null && mListView.getCount() > 0) {
+                    CustomSimpleCursorAdapter cursorAdapter = (CustomSimpleCursorAdapter) mListView.getAdapter();
+
                     for (int i = 0; i < mListView.getCount(); i++) {
                         View view = getViewByPosition(i, mListView);
+                        long id = cursorAdapter.getItemId(i);
 
                         if (view != null) {
-                            setListViewItem(view, activityDelete);
+                            setListViewItem(view, id, activityDelete);
                         }
                     }
                 }
@@ -240,7 +249,7 @@ public class TimetableContentFragment extends Fragment {
         });
     }
 
-    private void setListViewItem(View view, boolean activityDelete) {
+    private void setListViewItem(View view, final long itemId, boolean activityDelete) {
         Log.i(LOG_TAG, "setListViewItem activityDelete=" + activityDelete);
 
         if (view == null)
@@ -271,12 +280,31 @@ public class TimetableContentFragment extends Fragment {
             image.setImageBitmap(letterTile);
         }
 
-        CheckBox checkBox = view.findViewById(R.id.checkBoxSelect);
+        final CheckBox checkBox = view.findViewById(R.id.checkBoxSelect);
         if (checkBox != null) {
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        if (!mSelectedClasses.contains(String.valueOf(itemId)))
+                            mSelectedClasses.add(String.valueOf(itemId));
+                    } else {
+                        mSelectedClasses.remove(String.valueOf(itemId));
+                    }
+                }
+            });
+
             checkBox.setVisibility(activityDelete ? View.VISIBLE : View.GONE);
 
-            if (!activityDelete)
+            if (!activityDelete) {
                 checkBox.setChecked(false);
+            } else {
+                if (mSelectedClasses.contains(String.valueOf(itemId))) {
+                    checkBox.setChecked(true);
+                } else {
+                    checkBox.setChecked(false);
+                }
+            }
         }
     }
 
@@ -287,6 +315,7 @@ public class TimetableContentFragment extends Fragment {
     private class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
         @SuppressWarnings("deprecation")
         Context mContext;
+
         CustomSimpleCursorAdapter(Context context, int layout, Cursor c,
                                   String[] from, int[] to) {
             super(context, layout, c, from, to);
@@ -299,7 +328,7 @@ public class TimetableContentFragment extends Fragment {
             View view = super.getView(position, convertView, parent);
 
             if (view != null) {
-                setListViewItem(view, ((TimetableActivity) mContext).isActivityDelete());
+                setListViewItem(view, getItemId(position), ((TimetableActivity) mContext).isActivityDelete());
             }
 
             return view;
@@ -476,20 +505,18 @@ public class TimetableContentFragment extends Fragment {
             }
 
             TimetableActivity timetableActivity = (TimetableActivity) getActivity();
-            ViewPager viewPager;
-            List<TimetablePagerItem> tabs;
-            TimetableContentFragment fragment = null;
 
             if (timetableActivity != null) {
-                viewPager = timetableActivity.getViewPager();
-                tabs = timetableActivity.getTabs();
+                ViewPager viewPager = timetableActivity.getViewPager();
+                TimetableContentFragment fragment;
+                TimetableActivity.TimetableFragmentPagerAdapter fragmentPagerAdapter = timetableActivity.getFragmentPagerAdapter();
 
-                if (tabs != null && viewPager != null && viewPager.getCurrentItem() >= 0) {
-                    fragment = (tabs.get(viewPager.getCurrentItem())).getFragment();
-                }
+                if (fragmentPagerAdapter != null && viewPager != null && viewPager.getCurrentItem() >= 0) {
+                    fragment = (TimetableContentFragment) fragmentPagerAdapter.getFragment(viewPager.getCurrentItem());
 
-                if (fragment != null) {
-                    refreshFragment();
+                    if (fragment != null) {
+                        refreshFragment();
+                    }
                 }
             }
         }

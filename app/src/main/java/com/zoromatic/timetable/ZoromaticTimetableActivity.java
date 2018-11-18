@@ -16,7 +16,7 @@ public class ZoromaticTimetableActivity extends ThemeActivity {
         
         setContentView(R.layout.main);      
         
-        Intent timetableIntent = new Intent(getApplicationContext(), TimetableActivity.class);        
+        Intent timetableIntent = new Intent(getBaseContext(), TimetableActivity.class);
         startActivity(timetableIntent);
 		
 		finish();

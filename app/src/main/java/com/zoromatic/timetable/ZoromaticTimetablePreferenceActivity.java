@@ -31,7 +31,7 @@ public class ZoromaticTimetablePreferenceActivity extends ThemeAppCompatActivity
         }
 
         // Change locale settings in the application
-        final Resources res = getApplicationContext().getResources();
+        final Resources res = getBaseContext().getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
         conf.locale = new Locale(lang.toLowerCase());

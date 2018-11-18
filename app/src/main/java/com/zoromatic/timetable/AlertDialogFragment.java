@@ -1,9 +1,5 @@
 package com.zoromatic.timetable;
 
-import java.util.List;
-
-import com.zoromatic.timetable.TimetableActivity.TimetablePagerItem;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -38,50 +34,34 @@ public class AlertDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = null;
 
         if (editBox) {
-
             TimetableActivity timetableActivity = (TimetableActivity) getActivity();
-            ViewPager viewPager;
-            List<TimetablePagerItem> tabs;
-            TimetableContentFragment fragment = null;
-
             if (timetableActivity != null) {
+                ViewPager viewPager = timetableActivity.getViewPager();
+                TimetableContentFragment fragment;
+                TimetableActivity.TimetableFragmentPagerAdapter fragmentPagerAdapter = timetableActivity.getFragmentPagerAdapter();
 
-                viewPager = timetableActivity.getViewPager();
-                tabs = timetableActivity.getTabs();
+                if (fragmentPagerAdapter != null && viewPager != null && viewPager.getCurrentItem() >= 0) {
+                    fragment = (TimetableContentFragment) fragmentPagerAdapter.getFragment(viewPager.getCurrentItem());
 
-                if (tabs != null && viewPager != null) {
-                    fragment = (tabs.get(viewPager.getCurrentItem())).getFragment();
-                }
-
-                if (fragment != null) {
-                    builder = new AlertDialog.Builder(getActivity(),
-                            theme.compareToIgnoreCase("light") == 0 ? R.style.AppCompatAlertDialogStyleLight : R.style.AppCompatAlertDialogStyle)
-                            .setTitle(title)
-                            .setMessage(message)
-                            .setView(input)
-                            .setPositiveButton(android.R.string.yes, null)
-                            .setNegativeButton(android.R.string.no,
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int whichButton) {
-                                            // Do nothing.
-                                        }
-                                    });
+                    if (fragment != null) {
+                        builder = new AlertDialog.Builder(getActivity(),
+                                theme.compareToIgnoreCase("light") == 0 ? R.style.AppCompatAlertDialogStyleLight : R.style.AppCompatAlertDialogStyle)
+                                .setTitle(title)
+                                .setMessage(message)
+                                .setView(input)
+                                .setPositiveButton(android.R.string.yes, null)
+                                .setNegativeButton(android.R.string.no,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,
+                                                                int whichButton) {
+                                                // Do nothing.
+                                            }
+                                        });
+                    }
                 }
             }
         }
 
         return builder.show();
-    }
-
-    public void taskFinished() {
-        // Make sure we check if it is resumed because we will crash if trying to dismiss the dialog
-        // after the user has switched to another app.
-        if (isResumed())
-            dismiss();
-
-        // Tell the fragment that we are done.
-        //if (getTargetFragment() != null)
-        //    getTargetFragment().onActivityResult(TASK_FRAGMENT, Activity.RESULT_OK, null);
     }
 }
