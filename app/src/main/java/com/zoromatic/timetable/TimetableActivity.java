@@ -72,7 +72,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
         initView();
         initDrawer();
 
-        //loadTabs();
         setFragments();
 
         mToolbar = findViewById(R.id.toolbar);
@@ -241,7 +240,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
             setActivityDelete(false);
 
             if (mFragmentPagerAdapter != null && mViewPager != null) {
-                //TimetableContentFragment fragment = (mTabs.get(mViewPager.getCurrentItem())).getFragment();
                 TimetableContentFragment fragment = (TimetableContentFragment) mFragmentPagerAdapter.getFragment(mViewPager.getCurrentItem());
 
                 if (fragment != null)
@@ -332,7 +330,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
                 return true;
             case R.id.delete:
                 if (mFragmentPagerAdapter != null && mViewPager != null) {
-                    //TimetableContentFragment fragment = (mTabs.get(mViewPager.getCurrentItem())).getFragment();
                     TimetableContentFragment fragment = (TimetableContentFragment) mFragmentPagerAdapter.getFragment(mViewPager.getCurrentItem());
 
                     if (fragment != null)
@@ -360,7 +357,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
             case ACTIVITY_CREATE:
             case ACTIVITY_EDIT:
                 if (mFragmentPagerAdapter != null && mViewPager != null) {
-                    //fragment = (mTabs.get(mViewPager.getCurrentItem())).getFragment();
                     fragment = (TimetableContentFragment) mFragmentPagerAdapter.getFragment(mViewPager.getCurrentItem());
 
                     if (fragment != null) {
@@ -373,35 +369,6 @@ public class TimetableActivity extends ThemeAppCompatActivity {
                 break;
         }
     }
-
-//    @SuppressLint("ResourceType")
-//    public void loadTabs() {
-//        Log.i(LOG_TAG, "loadTabs");
-//
-//        if (mTabs != null) {
-//            for (TimetablePagerItem tab : mTabs) {
-//                tab.setFragment(null);
-//            }
-//
-//            mTabs.clear();
-//
-//            TypedValue outValue = new TypedValue();
-//            getTheme().resolveAttribute(R.attr.tabTextColor, outValue, true);
-//            int textColor = outValue.resourceId;
-//            int colorIndicator = getResources().getColor(textColor);
-//
-//            final Resources res = getBaseContext().getResources();
-//            TypedArray array = res.obtainTypedArray(R.array.days_week);
-//
-//            mTabs.add(new TimetablePagerItem(array.getString(0), colorIndicator, 0));
-//            mTabs.add(new TimetablePagerItem(array.getString(1), colorIndicator, 1));
-//            mTabs.add(new TimetablePagerItem(array.getString(2), colorIndicator, 2));
-//            mTabs.add(new TimetablePagerItem(array.getString(3), colorIndicator, 3));
-//            mTabs.add(new TimetablePagerItem(array.getString(4), colorIndicator, 4));
-//
-//            array.recycle();
-//        }
-//    }
 
     public void setFragments() {
         Log.i(LOG_TAG, "setFragments");

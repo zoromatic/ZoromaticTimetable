@@ -366,7 +366,6 @@ public class TimetableContentFragment extends Fragment {
         protected void onPostExecute(Void result) {
             Log.i(LOG_TAG, "DataProviderTask.onPostExecute");
 
-            //((TimetableActivity) timetableFragment.mContext).setActivityDelete(false);
             timetableFragment.setListViewItems(((TimetableActivity) timetableFragment.mContext).isActivityDelete());
         }
     }
