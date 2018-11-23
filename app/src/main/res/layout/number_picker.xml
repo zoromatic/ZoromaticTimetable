@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobileWidget"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -24,7 +25,9 @@
         android:gravity="center"
         android:singleLine="true"
         android:inputType="number"
-        android:background="@android:drawable/editbox_background" />
+        android:background="@android:drawable/editbox_background"
+        android:autofillHints="@string/pick_number"
+        tools:targetApi="o" />
 
     <ImageButton android:id="@+id/decrement"
         android:layout_width="fill_parent"

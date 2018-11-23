@@ -58,7 +58,8 @@
                     android:id="@+id/timePickerStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:timePickerMode="spinner" />
+                    android:timePickerMode="spinner"
+                    tools:targetApi="lollipop" />
 
             </LinearLayout>
 
@@ -76,7 +77,8 @@
                     android:id="@+id/timePickerEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:timePickerMode="spinner" />
+                    android:timePickerMode="spinner"
+                    tools:targetApi="lollipop" />
 
             </LinearLayout>
 

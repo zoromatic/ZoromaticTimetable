@@ -313,7 +313,6 @@ public class TimetableContentFragment extends Fragment {
     }
 
     private class CustomSimpleCursorAdapter extends SimpleCursorAdapter {
-        @SuppressWarnings("deprecation")
         Context mContext;
 
         CustomSimpleCursorAdapter(Context context, int layout, Cursor c,
@@ -374,7 +373,6 @@ public class TimetableContentFragment extends Fragment {
         Log.i(LOG_TAG, "fillData");
 
         ((Activity) mContext).runOnUiThread(new Runnable() {
-            @SuppressWarnings("deprecation")
             @Override
             public void run() {
                 if (mSQLiteDbAdapter == null)
