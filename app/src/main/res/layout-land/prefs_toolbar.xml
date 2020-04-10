@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         app:theme="?attr/toolbarNewStyle"
         app:titleTextAppearance="@style/ToolbarTitle"
@@ -32,5 +32,5 @@
                 android:text="@null"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 </LinearLayout>

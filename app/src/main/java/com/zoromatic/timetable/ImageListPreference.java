@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.ListPreference;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListAdapter;

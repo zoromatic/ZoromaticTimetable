@@ -6,6 +6,6 @@
         android:title=""
         app:showAsAction="always"
         app:actionLayout="@layout/on_off_switch"
-        app:actionViewClass="android.support.v7.widget.SwitchCompat"
+        app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
     />   
 </menu>
